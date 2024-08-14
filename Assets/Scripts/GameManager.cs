@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject jerryPrefab;
 
     public SpeedSystem currentSpeed;
-    int currentPower;
+    public int currentPower;
     GameObject mainJerry;
 
+    public float collisionTimer = 0f;
     public static GameManager instance;
 
     // Start is called before the first frame update
@@ -27,11 +29,13 @@ public class GameManager : MonoBehaviour
         {
             if (currentPower <= 5)
                 AddNewJerrys();
+            UIManager.instance.PowerUpdate(currentPower);
         }
         else if (Input.GetKeyDown(KeyCode.Z))
         {
             if (currentPower >= 1)
                 RemoveJerrys();
+            UIManager.instance.PowerUpdate(currentPower);
         }
     }
 
@@ -41,7 +45,7 @@ public class GameManager : MonoBehaviour
 
         currentSpeed = new SpeedSystem
         {
-            moveSpeed = 16f,
+            moveSpeed = 15f,
             maxWaitTime = 0.4f,
             range = 200f
         };
@@ -50,12 +54,13 @@ public class GameManager : MonoBehaviour
         mainJerry.tag = "MainJerry";
     }
 
-    void AddNewJerrys()
+    public void AddNewJerrys()
     {
         currentPower++;
 
+
         currentSpeed.moveSpeed -= 2.2f;
-        currentSpeed.maxWaitTime += 0.1f;
+        currentSpeed.maxWaitTime += 0.15f;
         currentSpeed.range += 100;
 
 
@@ -69,20 +74,32 @@ public class GameManager : MonoBehaviour
         Instantiate(jerryPrefab, mainJerry.transform.position, Quaternion.identity);
     }
 
-    void RemoveJerrys()
+    public void RemoveJerrys()
     {
         currentPower--;
+        
+
         currentSpeed.moveSpeed += 2.2f;
-        currentSpeed.maxWaitTime -= 0.1f;
+        currentSpeed.maxWaitTime -= 0.15f;
         currentSpeed.range -= 100;
 
         GameObject[] jerrys = GameObject.FindGameObjectsWithTag("Jerry");
 
         for (int i = 0; i < jerrys.Length; i+=2)
         {
-            Destroy(jerrys[i]);
+            DestroyImmediate(jerrys[i]);
         }
 
+        GameObject[] jerrysFinal = GameObject.FindGameObjectsWithTag("Jerry");
+        Debug.Log(jerrysFinal.Length);
+
+        Debug.Log("Destroyed");
+
+    }
+
+    public void WIn()
+    {
+        SceneManager.LoadScene("Win");
     }
 
 }

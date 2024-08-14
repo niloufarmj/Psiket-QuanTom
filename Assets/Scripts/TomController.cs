@@ -5,8 +5,12 @@ public class TomController : MonoBehaviour
     public float moveSpeed;
     private Vector2 velocity;
     private Rigidbody2D rb;
-    private float collisionTimer = 0f;
     private bool isColliding = false;
+    public AudioSource jerrySound;
+    private float collisionAudioTimer = 0f;
+    public float collisionAudioDelay = 0.3f; // Delay between audio playbacks (in seconds)
+
+    public Animator animator;
 
     private void Start()
     {
@@ -22,24 +26,54 @@ public class TomController : MonoBehaviour
         // Update the collision timer
         if (isColliding)
         {
-            collisionTimer += Time.deltaTime;
-            if (collisionTimer >= 5f)
+            GameManager.instance.collisionTimer += Time.deltaTime;
+
+            if (GameManager.instance.collisionTimer >= 4f)
             {
-                Debug.Log("Tom has been within Jerry's collider for 5 seconds!");
+                GameManager.instance.WIn();
                 // Reset the timer
-                collisionTimer = 0f;
+                GameManager.instance.collisionTimer = 0f;
             }
+
+            if (collisionAudioTimer == 0 || collisionAudioTimer >= collisionAudioDelay)
+            {
+                jerrySound.PlayOneShot(jerrySound.clip);
+                collisionAudioTimer = 0f;
+            }
+
+            // Play the audio with a delay
+            collisionAudioTimer += Time.deltaTime;
+            
         }
         else
         {
             // Reset the timer if the collision ends
-            collisionTimer = 0f;
+            GameManager.instance.collisionTimer = 0f;
+            collisionAudioTimer = 0f;
+        }
+    }
+
+    void UpdateAnimation()
+    {
+        if (velocity != Vector2.zero)
+        {
+            animator.SetBool("Walks", true);
+
+            
+            // Set the horizontal and vertical values for the animator
+            animator.SetFloat("Horizontal", velocity.x);
+            animator.SetFloat("Vertical", velocity.y);
+        }
+        else
+        {
+            animator.SetBool("Walks", false);
         }
     }
 
     private void FixedUpdate()
     {
         rb.velocity = velocity * moveSpeed;
+        UpdateAnimation();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -20,7 +20,15 @@ public class ScreenWrapper : MonoBehaviour
     public static List<Transform> wrappableObjects = new List<Transform>();
     private static List<GameObject> activeCameras = new List<GameObject>();
     // Start is called before the first frame update
-    private void Awake()
+    void Start()
+    {
+        if (activeCameras.Count == 0)
+        {
+            CreateCameras(cameraOffsets, cullingMask);
+        }
+    }
+
+    void Awake()
     {
         _cullingMask = cullingMask;
         UpdateCameraBounds();
@@ -45,12 +53,15 @@ public class ScreenWrapper : MonoBehaviour
     }
     void MoveCameras()
     {
-        for(int i = 0; i < activeCameras.Count; i ++)
+        if (activeCameras.Count > 0)
         {
-            activeCameras[i].transform.position = cameraOffsets[i];
-            activeCameras[i].GetComponent<Camera>().depth = Camera.main.depth;
+            for (int i = 0; i < activeCameras.Count; i++)
+            {
+                activeCameras[i].transform.position = cameraOffsets[i];
+            }
         }
     }
+
     void UpdateCameraBounds()
     {
         cameraWorldBounds = new Vector3(transform.position.x + Camera.main.orthographicSize * Screen.width / Screen.height, // Get the top left corner of the camera in worldSpace.
@@ -138,4 +149,19 @@ public class ScreenWrapper : MonoBehaviour
             MoveCameras();
         }
     }
+
+    void OnDisable()
+    {
+        activeCameras.Clear();
+    }
+
+    void OnDestroy()
+    {
+        // Clean up the parent game object and any remaining cameras
+        if (transform.parent != null)
+        {
+            Destroy(transform.parent.gameObject);
+        }
+    }
+
 }

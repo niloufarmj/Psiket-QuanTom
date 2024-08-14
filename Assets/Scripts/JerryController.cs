@@ -8,6 +8,8 @@ public class JerryController : MonoBehaviour
     private bool isMoving = false;
     GameManager gameManager;
 
+    public Animator animator;
+
 
     private void Start()
     {
@@ -33,6 +35,30 @@ public class JerryController : MonoBehaviour
             {
                 isMoving = false;
             }
+        }
+
+        UpdateAnimation();
+    }
+
+    void UpdateAnimation()
+    {
+        if (isMoving)
+        {
+            animator.SetBool("Walking", true);
+
+            // Calculate the direction vector towards the target position
+            Vector2 direction = targetPosition - (Vector2)transform.position;
+
+            // Normalize the direction vector to get the unit vector
+            direction.Normalize();
+
+            // Set the horizontal and vertical values for the animator
+            animator.SetFloat("Horizontal", direction.x);
+            animator.SetFloat("Vertical", direction.y);
+        }
+        else
+        {
+            animator.SetBool("Walking", false);
         }
     }
 
