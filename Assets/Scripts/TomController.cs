@@ -28,7 +28,7 @@ public class TomController : MonoBehaviour
         {
             GameManager.instance.collisionTimer += Time.deltaTime;
 
-            if (GameManager.instance.collisionTimer >= 4f)
+            if (GameManager.instance.collisionTimer >= PlayerPrefs.GetFloat("difficulty"))
             {
                 GameManager.instance.WIn();
                 // Reset the timer

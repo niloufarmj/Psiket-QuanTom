@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        catched.fillAmount = GameManager.instance.collisionTimer / 4;
+        catched.fillAmount = GameManager.instance.collisionTimer / PlayerPrefs.GetFloat("difficulty");
         locationSlider.onValueChanged.AddListener(LocationChanged);
         speedSlider.onValueChanged.AddListener(SpeedChanged);
 
