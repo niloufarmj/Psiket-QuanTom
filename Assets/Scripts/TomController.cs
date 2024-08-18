@@ -1,3 +1,4 @@
+using EasyJoystick;
 using UnityEngine;
 
 public class TomController : MonoBehaviour
@@ -13,6 +14,7 @@ public class TomController : MonoBehaviour
     private float deltax, deltay;
 
     public Animator animator;
+    public Joystick joystick;
 
     private void Start()
     {
@@ -22,34 +24,21 @@ public class TomController : MonoBehaviour
 
     private void Update()
     {
-        if (Application.isMobilePlatform)
-        {
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.GetTouch(0);
-                Vector2 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
+        float horizontal, vertical;
 
-                switch (touch.phase)
-                {
-                    case TouchPhase.Began:
-                        deltax = touchPos.x - transform.position.x;
-                        deltay = touchPos.y - transform.position.y;
-                        break;
-                    case TouchPhase.Moved:
-                        rb.MovePosition(new Vector2(touchPos.x - deltax, touchPos.y - deltay));
-                        break;
-                    case TouchPhase.Ended:
-                        rb.velocity = Vector2.zero;
-                        break;
-                }
-            }
+        if (UIManager.instance.isMobile)
+        {
+            horizontal = joystick.Horizontal();
+            vertical = joystick.Vertical();
         }
         else
         {
-            velocity.x = Input.GetAxisRaw("Horizontal");
-            velocity.y = Input.GetAxisRaw("Vertical");
+            horizontal = Input.GetAxisRaw("Horizontal");
+            vertical = Input.GetAxisRaw("Vertical");
         }
-        
+
+        velocity.x = horizontal;
+        velocity.y = vertical;
 
         // Update the collision timer
         if (isColliding)
