@@ -10,6 +10,8 @@ public class TomController : MonoBehaviour
     private float collisionAudioTimer = 0f;
     public float collisionAudioDelay = 0.3f; // Delay between audio playbacks (in seconds)
 
+    private float deltax, deltay;
+
     public Animator animator;
 
     private void Start()
@@ -20,8 +22,34 @@ public class TomController : MonoBehaviour
 
     private void Update()
     {
-        velocity.x = Input.GetAxisRaw("Horizontal");
-        velocity.y = Input.GetAxisRaw("Vertical");
+        if (Application.isMobilePlatform)
+        {
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+                Vector2 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
+
+                switch (touch.phase)
+                {
+                    case TouchPhase.Began:
+                        deltax = touchPos.x - transform.position.x;
+                        deltay = touchPos.y - transform.position.y;
+                        break;
+                    case TouchPhase.Moved:
+                        rb.MovePosition(new Vector2(touchPos.x - deltax, touchPos.y - deltay));
+                        break;
+                    case TouchPhase.Ended:
+                        rb.velocity = Vector2.zero;
+                        break;
+                }
+            }
+        }
+        else
+        {
+            velocity.x = Input.GetAxisRaw("Horizontal");
+            velocity.y = Input.GetAxisRaw("Vertical");
+        }
+        
 
         // Update the collision timer
         if (isColliding)
@@ -51,6 +79,8 @@ public class TomController : MonoBehaviour
             GameManager.instance.collisionTimer = 0f;
             collisionAudioTimer = 0f;
         }
+
+
     }
 
     void UpdateAnimation()
@@ -72,7 +102,8 @@ public class TomController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = velocity * moveSpeed;
+        if (!Application.isMobilePlatform)
+            rb.velocity = velocity * moveSpeed;
         UpdateAnimation();
     }
 

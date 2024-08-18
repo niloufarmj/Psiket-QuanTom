@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
     public Image catched;
     public Slider locationSlider, speedSlider;
     public static UIManager instance;
+    public GameObject pauseMenu, pauseButton;
+
     void Start()
     {
         instance = this;
@@ -57,6 +59,18 @@ public class UIManager : MonoBehaviour
         }
 
         PowerUpdate(GameManager.instance.currentPower);
+    }
+
+    public void ShowPauseMenu()
+    {
+        pauseMenu.SetActive(true);
+        pauseButton.SetActive(false);
+    }
+
+    public void HidePauseMenu()
+    {
+        pauseMenu.SetActive(false);
+        pauseButton.SetActive(true);
     }
 
 

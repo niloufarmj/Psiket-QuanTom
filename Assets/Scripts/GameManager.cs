@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
 
     public float collisionTimer = 0f;
     public static GameManager instance;
+    public bool gamePaused;
+
+    private List<GameObject> jerrysP;
+    private GameObject tomP;
 
     // Start is called before the first frame update
     void Start()
@@ -25,18 +29,22 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        if (!gamePaused)
         {
-            if (currentPower <= 5)
-                AddNewJerrys();
-            UIManager.instance.PowerUpdate(currentPower);
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                if (currentPower <= 5)
+                    AddNewJerrys();
+                UIManager.instance.PowerUpdate(currentPower);
+            }
+            else if (Input.GetKeyDown(KeyCode.Z))
+            {
+                if (currentPower >= 1)
+                    RemoveJerrys();
+                UIManager.instance.PowerUpdate(currentPower);
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.Z))
-        {
-            if (currentPower >= 1)
-                RemoveJerrys();
-            UIManager.instance.PowerUpdate(currentPower);
-        }
+        
     }
 
     void InitJerry()
@@ -54,11 +62,31 @@ public class GameManager : MonoBehaviour
         mainJerry.tag = "MainJerry";
     }
 
+    public void PauseGame()
+    {
+        gamePaused = true;
+
+        jerrysP = new List<GameObject>(GameObject.FindGameObjectsWithTag("Jerry"));
+        jerrysP.Add(mainJerry);
+        tomP = GameObject.FindGameObjectWithTag("Tom");
+
+        jerrysP.ForEach(j => j.SetActive(false)); tomP.SetActive(false);
+
+        UIManager.instance.ShowPauseMenu();
+
+    }
+
+    public void ContinueGame()
+    {
+        gamePaused = false;
+
+        jerrysP.ForEach(j => j.SetActive(true)); tomP.SetActive(true);
+        UIManager.instance.HidePauseMenu();
+    }
+
     public void AddNewJerrys()
     {
         currentPower++;
-
-
         currentSpeed.moveSpeed -= 2.2f;
         currentSpeed.maxWaitTime += 0.15f;
         currentSpeed.range += 100;
