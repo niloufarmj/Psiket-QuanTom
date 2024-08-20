@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     public GameObject mobileInput;
     public TextMeshProUGUI timerText;
 
+    public CanvasScaler cs;
+
     private float timer = 0f;
 
     void Start()
@@ -23,9 +25,16 @@ public class UIManager : MonoBehaviour
 
         isMobile = Application.isMobilePlatform;
 
-        //isMobile = true;
-
-        if (isMobile) mobileInput.SetActive(true); else mobileInput.SetActive(false);
+        if (isMobile)
+        {
+            mobileInput.SetActive(true);
+            cs.scaleFactor = 3.3f;
+        }
+        else
+        {
+            mobileInput.SetActive(false);
+            cs.scaleFactor = 1.5f;
+        }
     }
 
 

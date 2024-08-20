@@ -11,8 +11,6 @@ public class TomController : MonoBehaviour
     private float collisionAudioTimer = 0f;
     public float collisionAudioDelay = 0.3f; // Delay between audio playbacks (in seconds)
 
-    private float deltax, deltay;
-
     public Animator animator;
     public Joystick joystick;
 
@@ -91,8 +89,7 @@ public class TomController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!Application.isMobilePlatform)
-            rb.velocity = velocity * moveSpeed;
+        rb.velocity = velocity * moveSpeed;
         UpdateAnimation();
     }
 

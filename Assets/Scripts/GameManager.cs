@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
 
 
         GameObject[] jerrys = GameObject.FindGameObjectsWithTag("Jerry");
-        
+
         for (int i = 0; i < jerrys.Length; i++)
         {
             Instantiate(jerryPrefab, jerrys[i].transform.position, Quaternion.identity);
@@ -105,23 +105,18 @@ public class GameManager : MonoBehaviour
     public void RemoveJerrys()
     {
         currentPower--;
-        
-
         currentSpeed.moveSpeed += 2.2f;
         currentSpeed.maxWaitTime -= 0.15f;
         currentSpeed.range -= 100;
 
         GameObject[] jerrys = GameObject.FindGameObjectsWithTag("Jerry");
 
-        for (int i = 0; i < jerrys.Length; i+=2)
+        for (int i = 0; i < jerrys.Length; i += 2)
         {
             DestroyImmediate(jerrys[i]);
         }
 
         GameObject[] jerrysFinal = GameObject.FindGameObjectsWithTag("Jerry");
-        Debug.Log(jerrysFinal.Length);
-
-        Debug.Log("Destroyed");
 
     }
 
