@@ -44,7 +44,7 @@ The uncertainty levels consist of two main components:
 QuanTom and Jerry is designed to introduce players to the intriguing concepts of quantum mechanics through gameplay. By understanding the balance between position and momentum, players gain insights into one of the fundamental principles of physics.
 
 ## Development
-This game is developed as one of the **QGames** initiative by Psiket Academy. You can find more here: https://psiket.com/qgames
+This game is developed as one of the **QGames** initiative by Psiket Academy. You can find more here: https://psiket.com/qgame
 
 
 Happy gaming! 🎮
