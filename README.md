@@ -16,7 +16,6 @@ Catch Jerry! Stay over him for a few seconds to win.
 
 - **Movement:**  
   Use **WASD** or the arrow keys to move QuanTom.  
-  Press **Shift** to sprint.
 
 - **Uncertainty Levels:**  
   Use the **Z/X** or arrow keys to toggle between uncertainty levels.
@@ -45,9 +44,7 @@ The uncertainty levels consist of two main components:
 QuanTom and Jerry is designed to introduce players to the intriguing concepts of quantum mechanics through gameplay. By understanding the balance between position and momentum, players gain insights into one of the fundamental principles of physics.
 
 ## Development
-This game is developed as part of the **QGame** initiative by Psiket Academy.
+This game is developed as one of the **QGames** initiative by Psiket Academy. You can find more here: https://psiket.com/qgames
 
-## Getting Started
-To get started with QuanTom, clone the repository and follow the setup instructions in the documentation.
 
 Happy gaming! 🎮
